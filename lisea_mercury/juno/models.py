@@ -109,35 +109,6 @@ class User(models.Model):
             raise ValidationError(
                 "Error while updating zookeeper, reason: " + e.__str__())
 
-#
-# class UserFields(models.Model):
-#     table = models.ForeignKey(
-#             to=User,
-#             on_delete=models.CASCADE,
-#             null=False,
-#             blank=False
-#         )
-#     field = models.CharField(
-#             max_length=200,
-#             null=False,
-#             blank=False
-#         )
-#
-#     def clean(self):
-#         allFields = ";".join(list(UserFields.objects.all().values_list('field', flat=True)))
-#
-#         try:
-#             service = KazooService("/lisea/juno/user")
-#
-#             service.createOrUpdate("/fields", allFields)
-#
-#         except Exception as e:
-#             logger.error(e)
-#             raise ValidationError("Error while updating zookeeper, underlying cause: " + e.__str__())
-#
-#     def __str__(self):
-#         return self.field
-
 
 class Authority(models.Model):
 
@@ -195,33 +166,62 @@ class Authority(models.Model):
             raise ValidationError(
                 "Error while updating zookeeper, underlying cause: " + e.__str__())
 
-# class AuthorityFields(models.Model):
-#     table = models.ForeignKey(
-#             to=Authority,
-#             on_delete=models.CASCADE,
-#             null=False,
-#             blank=False
-#         )
-#     field = models.CharField(
-#             max_length=200,
-#             null=False,
-#             blank=False
-#         )
-#
-#     def clean(self):
-#         allFields = ";".join(list(AuthorityFields.objects.all().values_list('field', flat=True)))
-#
-#         try:
-#             service = KazooService("/lisea/juno/authority")
-#
-#             service.createOrUpdate("/fields", allFields)
-#
-#         except Exception as e:
-#             logger.error(e)
-#             raise ValidationError("Error while updating zookeeper, underlying cause: " + e.__str__())
-#
-#     def __str__(self):
-#         return self.field
+
+class FieldNames(models.Model):
+
+    username = models.CharField(
+        max_length=63,
+        null=False,
+        blank=False
+    )
+
+    password = models.CharField(
+        max_length=63,
+        null=False,
+        blank=False
+    )
+
+    uniqueId = models.CharField(
+        max_length=63,
+        null=False,
+        blank=False
+    )
+
+    uniqueId = models.CharField(
+        max_length=63,
+        null=False,
+        blank=False
+    )
+
+    enabled = models.CharField(
+        max_length=63,
+        null=False,
+        blank=False
+    )
+
+    authorityName = models.CharField(
+        max_length=63,
+        null=False,
+        blank=False
+    )
+
+    def clean(self):
+        if FieldNames.objects.exists() and not self.pk:
+            raise ValidationError("Only one instance allowed!")
+
+        try:
+            service = KazooService("/lisea/juno/field_names")
+
+            service.createOrUpdate("/username", self.username)
+            service.createOrUpdate("/password", self.password)
+            service.createOrUpdate("/unique_id", self.uniqueId)
+            service.createOrUpdate("/enabled", self.enabled)
+            service.createOrUpdate("/authority_name", self.authorityName)
+
+        except Exception as e:
+            logger.error(e)
+            raise ValidationError(
+                "Error while updating zookeeper, underlying cause: " + e.__str__())
 
 
 class ConnectionInfo(DbConnection):

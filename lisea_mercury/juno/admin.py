@@ -16,8 +16,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 """
 from django.contrib import admin
 
-from .models import User, Authority, ConnectionInfo
+from .models import User, Authority, ConnectionInfo, FieldNames
 
 admin.site.register(User)
 admin.site.register(Authority)
 admin.site.register(ConnectionInfo)
+admin.site.register(FieldNames)
