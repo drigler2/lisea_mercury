@@ -37,6 +37,7 @@ from re import search as research
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parents[2]
 APPNAME_SRC = research(r'()\w+$', str(BASE_DIR)).group()
+APP_VERSION_NUMBER = 0.3-SNAPSHOT
 
 
 # Quick-start development settings - unsuitable for production
