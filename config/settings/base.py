@@ -54,6 +54,7 @@ INSTALLED_APPS = [
 
     'lisea_mercury.core.apps.CoreConfig',
     'lisea_mercury.juno.apps.JunoConfig',
+    'lisea_mercury.vulcan.apps.VulcanConfig',
     'lisea_mercury.zookeeper.apps.ZookeeperConfig',
 ]
 
